@@ -5,7 +5,7 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions
 follow [Semantic Versioning](https://semver.org/). This file is generated at
 each release from the Conventional Commits: do not edit it by hand.
 
-## [0.1.0] - unreleased
+## [0.1.0] - 2026-11-21
 
 ### Added
 
@@ -18,3 +18,5 @@ each release from the Conventional Commits: do not edit it by hand.
 - Scene actions: report a battery level read on a sensor (a rise of 25 points counts as a replacement), record a replacement, get the battery report as a text.
 - Dashboard widgets: every battery with a "Batteries replaced" form, one battery, the batteries to buy with stock buttons.
 - Local transport only; English, French, German and Spanish everywhere.
+
+[0.1.0]: https://github.com/William-De71/gladys-battery-tracker/releases/tag/v0.1.0
