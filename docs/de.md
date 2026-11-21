@@ -1,0 +1,165 @@
+# Battery Tracker
+
+## Überblick
+
+Diese Integration behält die Batterien Ihres Hauses im Blick, im Sinne der
+Home-Assistant-Integration Battery Notes: für jedes batteriebetriebene Gerät
+Typ und Anzahl der Batterien, der Tag des Wechsels, ihr geschätztes Ende und
+Ihre Ersatzbatterien auf Lager.
+
+- **Ein Gerät pro Batterie-Eintrag**: Ladestand, Tage bis zum Wechsel, Tage
+  seit dem letzten, eine Taste „Batterien gewechselt“ und der Tag des letzten
+  Wechsels. Da sein Ladestand eine Batteriefunktion ist, deckt die **native
+  Warnung bei schwacher Batterie von Gladys** auch ab, was kein Sensor
+  überwacht: Fernbedienungen, Uhren, Rauchmelder.
+- **Gerätebibliothek**: rund 2.400 Modelle (Zigbee, Z-Wave, Bluetooth…) mit
+  Typ und Anzahl ihrer Batterien, aus Battery Notes, um einen Eintrag anhand
+  von Hersteller und Modell auszufüllen.
+- **Ersatzlager und Einkaufsliste**: Ein Wechsel nimmt seine Batterien aus
+  dem Lager, und die Liste sagt, was für die bald leeren Batterien zu kaufen
+  ist.
+- **Szenen**: drei Auslöser (Wechsel fällig, Batterien gewechselt, Batterien
+  zu kaufen) und drei Aktionen (Stand melden, Wechsel erfassen,
+  Batteriebericht abrufen).
+- **Drei Dashboard-Widgets**: alle Batterien, eine Batterie, die zu kaufenden
+  Batterien.
+
+![Die drei Widgets: alle Batterien ab der dringendsten, eine Batterie mit ihrem Ladestand und die zu kaufenden Batterien (generierte Illustration, kein Screenshot)](https://raw.githubusercontent.com/William-De71/gladys-battery-tracker/main/docs/assets/widgets.de.png)
+
+Transport: **lokal**. Die Integration ruft keinen Onlinedienst auf: Die
+Einträge bleiben in der Gladys-Datenbank (und in ihren Sicherungen).
+
+## Voraussetzungen
+
+- Gladys Assistant **5.3.0** oder neuer.
+- Sonst nichts: kein Konto, keine Hardware.
+
+Eine externe Integration kann die Geräte anderer Integrationen nicht lesen:
+Der echte Stand eines Zigbee-Sensors erreicht Battery Tracker nur über eine
+Szene (siehe „Den echten Stand melden“ unten). Ohne sie wird der Stand anhand
+des Alters der Batterien **geschätzt**.
+
+## Konfiguration
+
+1. Öffnen Sie in Gladys **Integrationen → Battery Tracker → Konfiguration**.
+2. Wählen Sie zuerst die **Sprache der Texte**: Ein Gerät behält die
+   Funktionsnamen, mit denen es erstellt wird.
+3. Klicken Sie für jedes batteriebetriebene Gerät auf **Batterie
+   hinzufügen**: ein Name (was die Batterien versorgen), der Batterietyp
+   (steht auf der Batterie), die Anzahl und der Tag, an dem sie eingelegt
+   wurden. Lassen Sie den Typ leer und geben Sie Hersteller und Modell an, um
+   sie in der Bibliothek zu suchen.
+4. Öffnen Sie den Tab **Entdecken** und fügen Sie die Batterien hinzu: Jede
+   wird ein Gerät.
+
+| Einstellung                       | Standard    | Bedeutung                                                                  |
+| --------------------------------- | ----------- | -------------------------------------------------------------------------- |
+| Sprache der Texte                 | Automatisch | Funktionsnamen, Szenentexte, Meldungen der Schaltflächen                   |
+| Standard-Lebensdauer (Monate)     | 12          | Lebensdauer einer Batterie ohne eigene oder gelernte Lebensdauer           |
+| Vor dem Ende warnen (Tage)        | 14          | So viele Tage vor dem Ende ist eine Batterie „bald zu wechseln“            |
+| Niedriger gemeldeter Stand (%)    | 20          | Ein gemeldeter Stand darunter oder gleich macht die Batterie fällig        |
+| Wechsel am Stand erkennen         | ja          | Ein Anstieg des gemeldeten Stands um 25 Punkte oder mehr zählt als Wechsel |
+| Wechsel aus dem Lager nehmen      | ja          | Wenn der Typ der Batterie auf Lager ist                                    |
+| Horizont der Einkaufsliste (Tage) | 30          | Die Liste umfasst die Batterien, die in so vielen Tagen leer werden        |
+| Uhrzeit der Szenenereignisse      | 9           | „Wechsel fällig“ und „Batterien zu kaufen“ starten nicht vorher            |
+
+Die weiteren Schaltflächen: **Wechsel erfassen**, **Lager ändern**
+(hinzufügen, entnehmen oder Anzahl setzen pro Typ), **Batterien auflisten**
+(mit ihren Nummern), **Batterie bearbeiten**, **Letzten Wechsel rückgängig
+machen** (eine versehentlich gedrückte Taste), **Batterie entfernen**,
+**Batterien eines Modells finden**. Eine Batterie wird über ihre Nummer in
+der Liste (`#2`) oder ihren genauen Namen angegeben.
+
+## Verwendung
+
+### Die Geräte
+
+| Funktion              | Bedeutung                                                             |
+| --------------------- | --------------------------------------------------------------------- |
+| Batteriestand         | Der gemeldete Stand, wenn jünger als 14 Tage, sonst die Schätzung (%) |
+| Tage bis zum Wechsel  | Bis zum geschätzten Ende, negativ danach                              |
+| Tage seit dem Wechsel | Seit dem letzten Wechsel                                              |
+| Batterien gewechselt  | Taster: erfasst einen Wechsel heute                                   |
+| Letzter Wechsel       | Der Tag des letzten Wechsels                                          |
+
+**Lebensdauer**: die an der Batterie eingegebene Lebensdauer, sonst die aus
+ihren Wechseln **gelernte** (Mittel der letzten drei Abstände), sonst die
+Standard-Lebensdauer. Der geschätzte Stand sinkt linear über die
+Lebensdauer: Er sagt das Alter der Batterien, nicht ihre Chemie.
+
+Gladys warnt die Administratoren bereits jeden Samstag um 9:00 Uhr, wenn ein
+Batteriestand unter den Schwellenwert in **Einstellungen → System** fällt:
+Eine als schwach geschätzte Batterie ist dabei, ein Sensor, der seinen
+eigenen Stand meldet, ebenfalls (sein Eintrag hier zählt dann doppelt).
+
+### Den echten Stand melden
+
+Für einen Sensor, der seinen Batteriestand meldet, erstellen Sie eine Szene:
+
+1. Auslöser: **die Batterie des Sensors ändert sich** (Geräteauslöser, jede
+   Änderung).
+2. Aktion: **Batteriestand melden** (Battery Tracker), Batterie = sein Gerät
+   hier, Stand = der Wert des Auslösers, zum Beispiel
+   `{{triggerEvent.last_value}}`.
+
+Der Stand ersetzt dann die Schätzung; darunter oder gleich dem niedrigen
+Stand wird die Batterie fällig. Ein Anstieg um 25 Punkte oder mehr zählt als
+Wechsel (der Auslöser „Batterien gewechselt“ startet dann nicht: Eine
+Szenenaktion löst nie ein Ereignis aus).
+
+### Lager und Einkaufsliste
+
+Erfassen Sie Ihre Ersatzbatterien mit **Lager ändern** oder dem Widget. Jeder
+Wechsel nimmt seine Batterien aus dem Lager seines Typs; **Letzten Wechsel
+rückgängig machen** gibt sie zurück. Die Einkaufsliste zählt pro Typ die
+Batterien, die im Horizont leer werden, abzüglich des Lagers; „Liste gekauft“
+lagert alles auf einmal ein.
+
+### Szenen
+
+- Auslöser: **Batteriewechsel fällig** (einmal pro Batterie, Filter nach
+  Batterie und Grund), **Batterien gewechselt** (Gerätetaste, Widget oder
+  Konfiguration), **Batterien zu kaufen** (einmal pro Typ bis zum Auffüllen).
+- Aktionen: **Batteriestand melden**, **Batteriewechsel erfassen**,
+  **Batteriebericht abrufen** (ein Text: zu wechselnde Batterien, alle oder
+  die Einkaufsliste).
+
+Beispiele:
+
+- _Wechsel fällig_ → `{{triggerEvent.data.name}}: {{triggerEvent.data.quantity}} × {{triggerEvent.data.battery_type}}` an Ihr Telefon senden.
+- Jeden Samstag um 10:00 Uhr → **Batteriebericht abrufen** (Einkaufsliste) →
+  seinen Text vor dem Einkauf als Nachricht senden.
+- _Batterien gewechselt_ am Rauchmelder → seinen Test über seine eigene
+  Integration starten.
+
+### Widgets
+
+- **Batterien**: Zähler (zu wechseln, bald, zu kaufen), eine Zeile pro
+  Batterie ab der dringendsten, eine Taste „Batterien gewechselt“ mit
+  Formular (welche Batterie, welcher Tag).
+- **Eine Batterie**: Anzeige des Stands, Resttage und Betriebstage, Typ,
+  Daten, Lebensdauer (eingegeben, gelernt oder Standard), Lager, Taste
+  „Heute gewechselt“.
+- **Batterien kaufen**: was pro Typ zu kaufen ist, das Lager, Tasten „Lager
+  ändern“ und „Liste gekauft“.
+
+## Fehlerbehebung
+
+- **Das Gerät erscheint nicht**: Öffnen Sie nach dem Hinzufügen der Batterie
+  den Tab Entdecken; bei einer entfernten Batterie muss auch ihr Gerät in
+  Gladys gelöscht werden.
+- **Die Funktionsnamen sind in der falschen Sprache**: Gladys benennt die
+  Funktionen eines erstellten Geräts nie um. Ändern Sie die Sprache, löschen
+  Sie das Gerät und fügen Sie es im Tab Entdecken erneut hinzu.
+- **„Batteriestand melden“ schlägt fehl**: Der Stand muss eine Zahl von 0
+  bis 100 sein; prüfen Sie die Variable der Szene (`{{…}}`) in den
+  Szenenprotokollen.
+- **Ein versehentlich erfasster Wechsel**: **Letzten Wechsel rückgängig
+  machen**.
+- **Die Bibliothek findet mehrere Modelle**: Geben Sie das genaue Modell oder
+  seine Kennung an, oder den Batterietyp selbst.
+- **Protokolle**: Integrationen → Battery Tracker → Protokolle, mit
+  `DEBUG=gladys-integration-sdk` für die Details des SDK. Melden Sie ein
+  Problem auf
+  [GitHub](https://github.com/William-De71/gladys-battery-tracker/issues) mit
+  den Versionen von Gladys und der Integration.

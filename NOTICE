@@ -1,0 +1,10 @@
+Gladys Battery Tracker integration
+Copyright 2026 William Deren
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This product includes the device library of Battery Notes
+(https://github.com/andrew-codechimp/HA-Battery-Notes, library/library.json),
+compacted in src/data/library.json, under the MIT License:
+Copyright (c) 2023-2026 Andrew Jackson (see src/data/LICENSE.battery-notes).
+This integration is not affiliated with nor endorsed by Battery Notes.

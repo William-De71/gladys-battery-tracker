@@ -1,0 +1,292 @@
+{
+  "_comment": "Generated from version 0.1.0. Never update without a documented migration (test/structure.test.js).",
+  "type": "device",
+  "config_schema": [
+    {
+      "key": "language",
+      "type": "select"
+    },
+    {
+      "key": "default_life_months",
+      "type": "number"
+    },
+    {
+      "key": "reminder_days",
+      "type": "number"
+    },
+    {
+      "key": "low_level",
+      "type": "number"
+    },
+    {
+      "key": "auto_replace",
+      "type": "boolean"
+    },
+    {
+      "key": "decrement_stock",
+      "type": "boolean"
+    },
+    {
+      "key": "horizon_days",
+      "type": "number"
+    },
+    {
+      "key": "event_hour",
+      "type": "number"
+    }
+  ],
+  "select_values": {
+    "language": ["auto", "en", "fr", "de", "es"]
+  },
+  "actions": [
+    "add_battery",
+    "mark_replaced",
+    "set_stock",
+    "list_batteries",
+    "edit_battery",
+    "undo_replacement",
+    "remove_battery",
+    "lookup_model"
+  ],
+  "action_fields": {
+    "add_battery": [
+      "name",
+      "battery_type",
+      "quantity",
+      "replaced_on",
+      "life_months",
+      "manufacturer",
+      "model"
+    ],
+    "mark_replaced": ["battery", "replaced_on"],
+    "set_stock": ["battery_type", "operation", "count"],
+    "list_batteries": [],
+    "edit_battery": ["battery", "name", "battery_type", "quantity", "life_months", "replaced_on"],
+    "undo_replacement": ["battery"],
+    "remove_battery": ["battery"],
+    "lookup_model": ["manufacturer", "model"]
+  },
+  "scene_triggers": [
+    {
+      "key": "replacement_due",
+      "fields": [
+        {
+          "key": "battery",
+          "type": "select",
+          "options": []
+        },
+        {
+          "key": "reason",
+          "type": "select",
+          "options": ["age", "level"]
+        }
+      ],
+      "variables": [
+        {
+          "key": "name",
+          "type": "string"
+        },
+        {
+          "key": "battery_type",
+          "type": "string"
+        },
+        {
+          "key": "quantity",
+          "type": "number"
+        },
+        {
+          "key": "days_remaining",
+          "type": "number"
+        },
+        {
+          "key": "level",
+          "type": "number"
+        },
+        {
+          "key": "level_source",
+          "type": "string"
+        },
+        {
+          "key": "end_date",
+          "type": "string"
+        },
+        {
+          "key": "reason",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "key": "battery_replaced",
+      "fields": [
+        {
+          "key": "battery",
+          "type": "select",
+          "options": []
+        }
+      ],
+      "variables": [
+        {
+          "key": "name",
+          "type": "string"
+        },
+        {
+          "key": "battery_type",
+          "type": "string"
+        },
+        {
+          "key": "quantity",
+          "type": "number"
+        },
+        {
+          "key": "days_used",
+          "type": "number"
+        },
+        {
+          "key": "stock_left",
+          "type": "number"
+        },
+        {
+          "key": "origin",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "key": "stock_short",
+      "fields": [
+        {
+          "key": "battery_type",
+          "type": "string",
+          "options": []
+        }
+      ],
+      "variables": [
+        {
+          "key": "battery_type",
+          "type": "string"
+        },
+        {
+          "key": "to_buy",
+          "type": "number"
+        },
+        {
+          "key": "needed",
+          "type": "number"
+        },
+        {
+          "key": "stock",
+          "type": "number"
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "report_level",
+      "fields": ["battery", "level"],
+      "outputs": [
+        {
+          "key": "level",
+          "type": "number"
+        },
+        {
+          "key": "replaced",
+          "type": "boolean"
+        },
+        {
+          "key": "days_remaining",
+          "type": "number"
+        }
+      ]
+    },
+    {
+      "key": "mark_replaced",
+      "fields": ["battery"],
+      "outputs": [
+        {
+          "key": "days_used",
+          "type": "number"
+        },
+        {
+          "key": "stock_left",
+          "type": "number"
+        }
+      ]
+    },
+    {
+      "key": "get_report",
+      "fields": ["content"],
+      "outputs": [
+        {
+          "key": "text",
+          "type": "string"
+        },
+        {
+          "key": "due_count",
+          "type": "number"
+        },
+        {
+          "key": "to_buy_count",
+          "type": "number"
+        }
+      ]
+    }
+  ],
+  "widgets": [
+    {
+      "key": "batteries",
+      "settings": ["show", "show_button"]
+    },
+    {
+      "key": "battery",
+      "settings": ["battery"]
+    },
+    {
+      "key": "shopping",
+      "settings": []
+    }
+  ],
+  "device_features": [
+    {
+      "key": "level",
+      "category": "battery",
+      "type": "integer",
+      "unit": "percent",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "days_remaining",
+      "category": "duration",
+      "type": "integer",
+      "unit": "days",
+      "min": -36600,
+      "max": 36600
+    },
+    {
+      "key": "days_since",
+      "category": "duration",
+      "type": "integer",
+      "unit": "days",
+      "min": 0,
+      "max": 36600
+    },
+    {
+      "key": "replaced",
+      "category": "button",
+      "type": "push",
+      "unit": null,
+      "min": 0,
+      "max": 1
+    },
+    {
+      "key": "last_replaced",
+      "category": "text",
+      "type": "text",
+      "unit": null,
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

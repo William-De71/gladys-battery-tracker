@@ -1,0 +1,1519 @@
+{
+  "manifest_version": 1,
+  "type": "device",
+  "name": "Battery Tracker",
+  "description": {
+    "en": "Track the batteries of your devices: type, replacements, estimated end, spare stock.",
+    "fr": "Suivi des piles de vos appareils : type, remplacements, fin estimée, stock de rechange.",
+    "de": "Batterien Ihrer Geräte verfolgen: Typ, Wechsel, geschätztes Ende, Ersatzlager.",
+    "es": "Seguimiento de las pilas de sus aparatos: tipo, cambios, fin estimado, stock de repuesto."
+  },
+  "version": "0.1.0",
+  "docker_image": "ghcr.io/william-de71/gladys-battery-tracker:0.1.0",
+  "gladys_version": ">=5.3.0",
+  "categories": ["services"],
+  "keywords": [
+    "battery",
+    "batteries",
+    "pile",
+    "piles",
+    "Batterie",
+    "pila",
+    "Battery Notes",
+    "CR2032",
+    "battery level",
+    "niveau de batterie"
+  ],
+  "cover_image": "https://raw.githubusercontent.com/William-De71/gladys-battery-tracker/main/cover.jpg",
+  "transports": ["local"],
+  "config_schema": [
+    {
+      "key": "intro",
+      "type": "section",
+      "label": {
+        "en": "Your batteries",
+        "fr": "Vos piles",
+        "de": "Ihre Batterien",
+        "es": "Sus pilas"
+      },
+      "description": {
+        "en": "How it works:\n1. Choose the “Language of the texts” below first: a device keeps the feature names it is created with.\n2. Declare each device that runs on batteries with “Add a battery” (the library can find the type from the model).\n3. Open the Discover tab and add it: it becomes a device with its level, its days left and a “Replaced” button.\n4. Optional: report the real level of a sensor with the scene action “Report a battery level”, and record your spare batteries with “Update the stock”.\nNothing leaves your Gladys: the integration calls no online service.",
+        "fr": "Comment ça marche :\n1. Choisissez d’abord la « Langue des textes » ci-dessous : un appareil garde les noms de fonctionnalités avec lesquels il est créé.\n2. Déclarez chaque appareil à piles avec « Ajouter une pile » (la bibliothèque peut trouver le type d’après le modèle).\n3. Ouvrez l’onglet Découverte et ajoutez-le : il devient un appareil avec son niveau, ses jours restants et un bouton « Piles remplacées ».\n4. Facultatif : transmettez le vrai niveau d’un capteur avec l’action de scène « Transmettre un niveau de pile », et notez vos piles de rechange avec « Mettre à jour le stock ».\nRien ne quitte votre Gladys : l’intégration n’appelle aucun service en ligne.",
+        "de": "So funktioniert es:\n1. Wählen Sie zuerst unten die „Sprache der Texte“: Ein Gerät behält die Funktionsnamen, mit denen es erstellt wird.\n2. Erfassen Sie jedes batteriebetriebene Gerät mit „Batterie hinzufügen“ (die Bibliothek kann den Typ anhand des Modells finden).\n3. Öffnen Sie den Tab Entdecken und fügen Sie es hinzu: Es wird ein Gerät mit Ladestand, Resttagen und einer Taste „Batterien gewechselt“.\n4. Optional: Melden Sie den echten Stand eines Sensors mit der Szenenaktion „Batteriestand melden“ und erfassen Sie Ihre Ersatzbatterien mit „Lager ändern“.\nNichts verlässt Ihr Gladys: Die Integration ruft keinen Onlinedienst auf.",
+        "es": "Cómo funciona:\n1. Elija primero el «Idioma de los textos» de abajo: un dispositivo conserva los nombres de funciones con los que se crea.\n2. Declare cada aparato con pilas con «Añadir una pila» (la biblioteca puede encontrar el tipo a partir del modelo).\n3. Abra la pestaña Descubrir y añádalo: se convierte en un dispositivo con su nivel, sus días restantes y un botón «Pilas cambiadas».\n4. Opcional: transmita el nivel real de un sensor con la acción de escena «Transmitir un nivel de pila», y anote sus pilas de repuesto con «Actualizar el stock».\nNada sale de su Gladys: la integración no llama a ningún servicio en línea."
+      }
+    },
+    {
+      "key": "language",
+      "type": "select",
+      "default": "auto",
+      "label": {
+        "en": "Language of the texts",
+        "fr": "Langue des textes",
+        "de": "Sprache der Texte",
+        "es": "Idioma de los textos"
+      },
+      "description": {
+        "en": "Feature names (given when the device is added), scene texts and messages of the buttons. Automatic: the language of the dashboard once a widget was shown.",
+        "fr": "Noms des fonctionnalités (donnés à l’ajout de l’appareil), textes des scènes et messages des boutons. Automatique : la langue du tableau de bord dès qu’un widget a été affiché.",
+        "de": "Funktionsnamen (beim Hinzufügen des Geräts vergeben), Szenentexte und Meldungen der Schaltflächen. Automatisch: die Sprache des Dashboards, sobald ein Widget angezeigt wurde.",
+        "es": "Nombres de las funciones (dados al añadir el dispositivo), textos de escena y mensajes de los botones. Automático: el idioma del panel en cuanto se ha mostrado un widget."
+      },
+      "options": [
+        {
+          "value": "auto",
+          "label": {
+            "en": "Automatic",
+            "fr": "Automatique",
+            "de": "Automatisch",
+            "es": "Automático"
+          }
+        },
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "Anglais",
+            "de": "Englisch",
+            "es": "Inglés"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "French",
+            "fr": "Français",
+            "de": "Französisch",
+            "es": "Francés"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "German",
+            "fr": "Allemand",
+            "de": "Deutsch",
+            "es": "Alemán"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Spanish",
+            "fr": "Espagnol",
+            "de": "Spanisch",
+            "es": "Español"
+          }
+        }
+      ]
+    },
+    {
+      "key": "default_life_months",
+      "type": "number",
+      "default": 12,
+      "min": 1,
+      "max": 240,
+      "label": {
+        "en": "Default life (months)",
+        "fr": "Durée de vie par défaut (mois)",
+        "de": "Standard-Lebensdauer (Monate)",
+        "es": "Duración por defecto (meses)"
+      },
+      "description": {
+        "en": "For a battery with no life of its own, until its replacements teach a better one.",
+        "fr": "Pour une pile sans durée propre, jusqu’à ce que ses remplacements en apprennent une meilleure.",
+        "de": "Für eine Batterie ohne eigene Lebensdauer, bis ihre Wechsel eine bessere lehren.",
+        "es": "Para una pila sin duración propia, hasta que sus cambios enseñen una mejor."
+      }
+    },
+    {
+      "key": "reminder_days",
+      "type": "number",
+      "default": 14,
+      "min": 0,
+      "max": 180,
+      "label": {
+        "en": "Warn before the end (days)",
+        "fr": "Prévenir avant la fin (jours)",
+        "de": "Vor dem Ende warnen (Tage)",
+        "es": "Avisar antes del fin (días)"
+      },
+      "description": {
+        "en": "A battery is “to replace soon” this many days before its estimated end.",
+        "fr": "Une pile est « à remplacer bientôt » ce nombre de jours avant sa fin estimée.",
+        "de": "Eine Batterie ist so viele Tage vor ihrem geschätzten Ende „bald zu wechseln“.",
+        "es": "Una pila está «por cambiar pronto» este número de días antes de su fin estimado."
+      }
+    },
+    {
+      "key": "low_level",
+      "type": "number",
+      "default": 20,
+      "min": 1,
+      "max": 99,
+      "label": {
+        "en": "Low reported level (%)",
+        "fr": "Niveau mesuré bas (%)",
+        "de": "Niedriger gemeldeter Stand (%)",
+        "es": "Nivel medido bajo (%)"
+      },
+      "description": {
+        "en": "A level reported by a scene at or under it makes the battery due, whatever its age.",
+        "fr": "Un niveau transmis par une scène inférieur ou égal rend la pile à remplacer, quel que soit son âge.",
+        "de": "Ein von einer Szene gemeldeter Stand darunter oder gleich macht die Batterie fällig, egal wie alt.",
+        "es": "Un nivel transmitido por una escena igual o inferior hace que la pila deba cambiarse, sea cual sea su edad."
+      }
+    },
+    {
+      "key": "auto_replace",
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "en": "Detect replacements from the level",
+        "fr": "Détecter les remplacements par le niveau",
+        "de": "Wechsel am Stand erkennen",
+        "es": "Detectar los cambios por el nivel"
+      },
+      "description": {
+        "en": "A reported level rising by 25 points or more counts as a replacement.",
+        "fr": "Un niveau transmis qui remonte de 25 points ou plus compte comme un remplacement.",
+        "de": "Ein gemeldeter Stand, der um 25 Punkte oder mehr steigt, zählt als Wechsel.",
+        "es": "Un nivel transmitido que sube 25 puntos o más cuenta como un cambio."
+      }
+    },
+    {
+      "key": "decrement_stock",
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "en": "Take replacements from the stock",
+        "fr": "Prendre les remplacements dans le stock",
+        "de": "Wechsel aus dem Lager nehmen",
+        "es": "Tomar los cambios del stock"
+      },
+      "description": {
+        "en": "When the type of the battery is in stock.",
+        "fr": "Quand le type de la pile est en stock.",
+        "de": "Wenn der Typ der Batterie auf Lager ist.",
+        "es": "Cuando el tipo de la pila está en stock."
+      }
+    },
+    {
+      "key": "horizon_days",
+      "type": "number",
+      "default": 30,
+      "min": 0,
+      "max": 365,
+      "label": {
+        "en": "Shopping list horizon (days)",
+        "fr": "Horizon de la liste d’achats (jours)",
+        "de": "Horizont der Einkaufsliste (Tage)",
+        "es": "Horizonte de la lista de compra (días)"
+      },
+      "description": {
+        "en": "The list covers the batteries ending within this many days, minus the stock.",
+        "fr": "La liste couvre les piles en fin de vie dans ce nombre de jours, moins le stock.",
+        "de": "Die Liste umfasst die Batterien, die in so vielen Tagen leer werden, abzüglich des Lagers.",
+        "es": "La lista cubre las pilas que se agotan en este número de días, menos el stock."
+      }
+    },
+    {
+      "key": "event_hour",
+      "type": "number",
+      "default": 9,
+      "min": 0,
+      "max": 23,
+      "label": {
+        "en": "Hour of the scene events",
+        "fr": "Heure des événements de scène",
+        "de": "Uhrzeit der Szenenereignisse",
+        "es": "Hora de los eventos de escena"
+      },
+      "description": {
+        "en": "“Replacement due” and “Stock short” start no earlier than this hour (0-23), so that no notification wakes you up at midnight.",
+        "fr": "« Remplacement à prévoir » et « Stock insuffisant » ne partent pas avant cette heure (0-23), pour qu’aucune notification ne vous réveille à minuit.",
+        "de": "„Wechsel fällig“ und „Lager zu klein“ starten nicht vor dieser Uhrzeit (0-23), damit Sie keine Benachrichtigung um Mitternacht weckt.",
+        "es": "«Cambio previsto» y «Stock insuficiente» no salen antes de esta hora (0-23), para que ninguna notificación le despierte a medianoche."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "key": "add_battery",
+      "timeout_seconds": 15,
+      "label": {
+        "en": "Add a battery",
+        "fr": "Ajouter une pile",
+        "de": "Batterie hinzufügen",
+        "es": "Añadir una pila"
+      },
+      "description": {
+        "en": "A device that runs on batteries: what it is, the battery type and count, the day they were put in.",
+        "fr": "Un appareil qui fonctionne sur piles : ce que c’est, le type et le nombre de piles, le jour où elles ont été mises.",
+        "de": "Ein batteriebetriebenes Gerät: was es ist, Typ und Anzahl der Batterien, der Tag, an dem sie eingelegt wurden.",
+        "es": "Un aparato que funciona con pilas: qué es, el tipo y el número de pilas, el día en que se pusieron."
+      },
+      "fields": [
+        {
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "Name",
+            "fr": "Nom",
+            "de": "Name",
+            "es": "Nombre"
+          },
+          "placeholder": {
+            "en": "Smoke detector — hall",
+            "fr": "Détecteur de fumée — entrée",
+            "de": "Rauchmelder — Flur",
+            "es": "Detector de humo — entrada"
+          },
+          "description": {
+            "en": "What the batteries power: the name of the device, of the widgets rows and of the scene texts (60 characters at most).",
+            "fr": "Ce que les piles alimentent : nom de l’appareil, des lignes des widgets et des textes de scène (60 caractères au maximum).",
+            "de": "Was die Batterien versorgen: Name des Geräts, der Widget-Zeilen und der Szenentexte (höchstens 60 Zeichen).",
+            "es": "Lo que alimentan las pilas: nombre del dispositivo, de las filas de los widgets y de los textos de escena (60 caracteres como máximo)."
+          },
+          "required": true
+        },
+        {
+          "key": "battery_type",
+          "type": "string",
+          "label": {
+            "en": "Battery type",
+            "fr": "Type de pile",
+            "de": "Batterietyp",
+            "es": "Tipo de pila"
+          },
+          "placeholder": {
+            "en": "CR2032, AA, AAA, CR123A…",
+            "fr": "CR2032, AA, AAA, CR123A…",
+            "de": "CR2032, AA, AAA, CR123A…",
+            "es": "CR2032, AA, AAA, CR123A…"
+          },
+          "description": {
+            "en": "Written on the battery. Leave it empty to look it up in the device library from the manufacturer and the model below.",
+            "fr": "Écrit sur la pile. Laissez vide pour le chercher dans la bibliothèque d’appareils d’après le fabricant et le modèle ci-dessous.",
+            "de": "Steht auf der Batterie. Leer lassen, um ihn anhand von Hersteller und Modell unten in der Gerätebibliothek zu suchen.",
+            "es": "Escrito en la pila. Déjelo vacío para buscarlo en la biblioteca de dispositivos según el fabricante y el modelo de abajo."
+          }
+        },
+        {
+          "key": "quantity",
+          "type": "number",
+          "min": 1,
+          "max": 24,
+          "label": {
+            "en": "Number of batteries",
+            "fr": "Nombre de piles",
+            "de": "Anzahl der Batterien",
+            "es": "Número de pilas"
+          },
+          "description": {
+            "en": "Empty: the count of the library, else 1.",
+            "fr": "Vide : le nombre de la bibliothèque, sinon 1.",
+            "de": "Leer: die Anzahl aus der Bibliothek, sonst 1.",
+            "es": "Vacío: el número de la biblioteca, si no 1."
+          }
+        },
+        {
+          "key": "replaced_on",
+          "type": "string",
+          "label": {
+            "en": "Last replacement",
+            "fr": "Dernier remplacement",
+            "de": "Letzter Wechsel",
+            "es": "Último cambio"
+          },
+          "placeholder": {
+            "en": "dd/mm/yyyy",
+            "fr": "jj/mm/aaaa",
+            "de": "TT.MM.JJJJ",
+            "es": "dd/mm/aaaa"
+          },
+          "description": {
+            "en": "When the batteries were put in. Empty: today.",
+            "fr": "Quand les piles ont été mises. Vide : aujourd’hui.",
+            "de": "Wann die Batterien eingelegt wurden. Leer: heute.",
+            "es": "Cuándo se pusieron las pilas. Vacío: hoy."
+          }
+        },
+        {
+          "key": "life_months",
+          "type": "number",
+          "min": 0,
+          "max": 240,
+          "label": {
+            "en": "Life (months)",
+            "fr": "Durée de vie (mois)",
+            "de": "Lebensdauer (Monate)",
+            "es": "Duración (meses)"
+          },
+          "description": {
+            "en": "Expected life. Empty: learned from the replacements, else the default life of the configuration.",
+            "fr": "Durée de vie attendue. Vide : apprise des remplacements, sinon la durée par défaut de la configuration.",
+            "de": "Erwartete Lebensdauer. Leer: aus den Wechseln gelernt, sonst die Standard-Lebensdauer der Konfiguration.",
+            "es": "Duración esperada. Vacío: aprendida de los cambios, si no la duración por defecto de la configuración."
+          }
+        },
+        {
+          "key": "manufacturer",
+          "type": "string",
+          "label": {
+            "en": "Manufacturer (library)",
+            "fr": "Fabricant (bibliothèque)",
+            "de": "Hersteller (Bibliothek)",
+            "es": "Fabricante (biblioteca)"
+          },
+          "placeholder": {
+            "en": "Aqara",
+            "fr": "Aqara",
+            "de": "Aqara",
+            "es": "Aqara"
+          }
+        },
+        {
+          "key": "model",
+          "type": "string",
+          "label": {
+            "en": "Model (library)",
+            "fr": "Modèle (bibliothèque)",
+            "de": "Modell (Bibliothek)",
+            "es": "Modelo (biblioteca)"
+          },
+          "placeholder": {
+            "en": "WSDCGQ11LM",
+            "fr": "WSDCGQ11LM",
+            "de": "WSDCGQ11LM",
+            "es": "WSDCGQ11LM"
+          }
+        }
+      ]
+    },
+    {
+      "key": "mark_replaced",
+      "timeout_seconds": 15,
+      "label": {
+        "en": "Record a replacement",
+        "fr": "Enregistrer un remplacement",
+        "de": "Wechsel erfassen",
+        "es": "Registrar un cambio"
+      },
+      "description": {
+        "en": "New batteries put in: the stock gives its batteries (when this type is in stock).",
+        "fr": "Piles neuves mises : le stock donne ses piles (quand ce type est en stock).",
+        "de": "Neue Batterien eingelegt: Das Lager gibt seine Batterien ab (wenn dieser Typ auf Lager ist).",
+        "es": "Pilas nuevas puestas: el stock entrega sus pilas (cuando este tipo está en stock)."
+      },
+      "fields": [
+        {
+          "key": "battery",
+          "type": "string",
+          "required": true,
+          "label": {
+            "en": "Battery",
+            "fr": "Pile",
+            "de": "Batterie",
+            "es": "Pila"
+          },
+          "placeholder": {
+            "en": "#1",
+            "fr": "#1",
+            "de": "#1",
+            "es": "#1"
+          },
+          "description": {
+            "en": "The number in “List the batteries” (#2), or the exact name.",
+            "fr": "Le numéro dans « Lister les piles » (#2), ou le nom exact.",
+            "de": "Die Nummer in „Batterien auflisten“ (#2) oder der genaue Name.",
+            "es": "El número en «Listar las pilas» (#2), o el nombre exacto."
+          }
+        },
+        {
+          "key": "replaced_on",
+          "type": "string",
+          "label": {
+            "en": "Day",
+            "fr": "Jour",
+            "de": "Tag",
+            "es": "Día"
+          },
+          "placeholder": {
+            "en": "dd/mm/yyyy",
+            "fr": "jj/mm/aaaa",
+            "de": "TT.MM.JJJJ",
+            "es": "dd/mm/aaaa"
+          },
+          "description": {
+            "en": "Empty: today.",
+            "fr": "Vide : aujourd’hui.",
+            "de": "Leer: heute.",
+            "es": "Vacío: hoy."
+          }
+        }
+      ]
+    },
+    {
+      "key": "set_stock",
+      "timeout_seconds": 15,
+      "label": {
+        "en": "Update the stock",
+        "fr": "Mettre à jour le stock",
+        "de": "Lager ändern",
+        "es": "Actualizar el stock"
+      },
+      "description": {
+        "en": "Spare batteries by type: add what you bought, remove what you used elsewhere, or set the count.",
+        "fr": "Piles de rechange par type : ajoutez ce que vous avez acheté, retirez ce qui a servi ailleurs, ou fixez le nombre.",
+        "de": "Ersatzbatterien nach Typ: Gekauftes hinzufügen, anderweitig Verbrauchtes entnehmen oder die Anzahl setzen.",
+        "es": "Pilas de repuesto por tipo: añada lo que compró, quite lo usado en otra parte, o fije la cantidad."
+      },
+      "fields": [
+        {
+          "key": "battery_type",
+          "type": "string",
+          "label": {
+            "en": "Battery type",
+            "fr": "Type de pile",
+            "de": "Batterietyp",
+            "es": "Tipo de pila"
+          },
+          "placeholder": {
+            "en": "CR2032, AA, AAA, CR123A…",
+            "fr": "CR2032, AA, AAA, CR123A…",
+            "de": "CR2032, AA, AAA, CR123A…",
+            "es": "CR2032, AA, AAA, CR123A…"
+          },
+          "required": true
+        },
+        {
+          "key": "operation",
+          "type": "select",
+          "default": "add",
+          "label": {
+            "en": "Operation",
+            "fr": "Opération",
+            "de": "Vorgang",
+            "es": "Operación"
+          },
+          "options": [
+            {
+              "value": "add",
+              "label": {
+                "en": "Add",
+                "fr": "Ajouter",
+                "de": "Hinzufügen",
+                "es": "Añadir"
+              }
+            },
+            {
+              "value": "remove",
+              "label": {
+                "en": "Remove",
+                "fr": "Retirer",
+                "de": "Entnehmen",
+                "es": "Quitar"
+              }
+            },
+            {
+              "value": "set",
+              "label": {
+                "en": "Set to",
+                "fr": "Fixer à",
+                "de": "Setzen auf",
+                "es": "Fijar en"
+              }
+            }
+          ]
+        },
+        {
+          "key": "count",
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 9999,
+          "label": {
+            "en": "Count",
+            "fr": "Nombre",
+            "de": "Anzahl",
+            "es": "Cantidad"
+          }
+        }
+      ]
+    },
+    {
+      "key": "list_batteries",
+      "timeout_seconds": 15,
+      "label": {
+        "en": "List the batteries",
+        "fr": "Lister les piles",
+        "de": "Batterien auflisten",
+        "es": "Listar las pilas"
+      },
+      "description": {
+        "en": "Every battery with its number, its estimated end and the stock.",
+        "fr": "Chaque pile avec son numéro, sa fin estimée et le stock.",
+        "de": "Jede Batterie mit ihrer Nummer, ihrem geschätzten Ende und dem Lager.",
+        "es": "Cada pila con su número, su fin estimado y el stock."
+      }
+    },
+    {
+      "key": "edit_battery",
+      "timeout_seconds": 15,
+      "label": {
+        "en": "Edit a battery",
+        "fr": "Modifier une pile",
+        "de": "Batterie bearbeiten",
+        "es": "Modificar una pila"
+      },
+      "description": {
+        "en": "Fill in only what changes.",
+        "fr": "Ne remplissez que ce qui change.",
+        "de": "Füllen Sie nur aus, was sich ändert.",
+        "es": "Rellene solo lo que cambia."
+      },
+      "fields": [
+        {
+          "key": "battery",
+          "type": "string",
+          "required": true,
+          "label": {
+            "en": "Battery",
+            "fr": "Pile",
+            "de": "Batterie",
+            "es": "Pila"
+          },
+          "placeholder": {
+            "en": "#1",
+            "fr": "#1",
+            "de": "#1",
+            "es": "#1"
+          },
+          "description": {
+            "en": "The number in “List the batteries” (#2), or the exact name.",
+            "fr": "Le numéro dans « Lister les piles » (#2), ou le nom exact.",
+            "de": "Die Nummer in „Batterien auflisten“ (#2) oder der genaue Name.",
+            "es": "El número en «Listar las pilas» (#2), o el nombre exacto."
+          }
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "Name",
+            "fr": "Nom",
+            "de": "Name",
+            "es": "Nombre"
+          },
+          "placeholder": {
+            "en": "Smoke detector — hall",
+            "fr": "Détecteur de fumée — entrée",
+            "de": "Rauchmelder — Flur",
+            "es": "Detector de humo — entrada"
+          },
+          "description": {
+            "en": "Empty: unchanged.",
+            "fr": "Vide : inchangé.",
+            "de": "Leer: unverändert.",
+            "es": "Vacío: sin cambios."
+          }
+        },
+        {
+          "key": "battery_type",
+          "type": "string",
+          "label": {
+            "en": "Battery type",
+            "fr": "Type de pile",
+            "de": "Batterietyp",
+            "es": "Tipo de pila"
+          },
+          "placeholder": {
+            "en": "CR2032, AA, AAA, CR123A…",
+            "fr": "CR2032, AA, AAA, CR123A…",
+            "de": "CR2032, AA, AAA, CR123A…",
+            "es": "CR2032, AA, AAA, CR123A…"
+          },
+          "description": {
+            "en": "Empty: unchanged.",
+            "fr": "Vide : inchangé.",
+            "de": "Leer: unverändert.",
+            "es": "Vacío: sin cambios."
+          }
+        },
+        {
+          "key": "quantity",
+          "type": "number",
+          "min": 1,
+          "max": 24,
+          "label": {
+            "en": "Number of batteries",
+            "fr": "Nombre de piles",
+            "de": "Anzahl der Batterien",
+            "es": "Número de pilas"
+          },
+          "description": {
+            "en": "Empty: unchanged.",
+            "fr": "Vide : inchangé.",
+            "de": "Leer: unverändert.",
+            "es": "Vacío: sin cambios."
+          }
+        },
+        {
+          "key": "life_months",
+          "type": "number",
+          "min": 0,
+          "max": 240,
+          "label": {
+            "en": "Life (months)",
+            "fr": "Durée de vie (mois)",
+            "de": "Lebensdauer (Monate)",
+            "es": "Duración (meses)"
+          },
+          "description": {
+            "en": "Empty: unchanged. 0: learned or default life again.",
+            "fr": "Vide : inchangée. 0 : de nouveau la durée apprise ou par défaut.",
+            "de": "Leer: unverändert. 0: wieder gelernte oder Standard-Lebensdauer.",
+            "es": "Vacío: sin cambios. 0: de nuevo la duración aprendida o por defecto."
+          }
+        },
+        {
+          "key": "replaced_on",
+          "type": "string",
+          "label": {
+            "en": "Last replacement",
+            "fr": "Dernier remplacement",
+            "de": "Letzter Wechsel",
+            "es": "Último cambio"
+          },
+          "placeholder": {
+            "en": "dd/mm/yyyy",
+            "fr": "jj/mm/aaaa",
+            "de": "TT.MM.JJJJ",
+            "es": "dd/mm/aaaa"
+          },
+          "description": {
+            "en": "Corrects the day of the last replacement without adding one. Empty: unchanged.",
+            "fr": "Corrige le jour du dernier remplacement sans en ajouter un. Vide : inchangé.",
+            "de": "Korrigiert den Tag des letzten Wechsels, ohne einen hinzuzufügen. Leer: unverändert.",
+            "es": "Corrige el día del último cambio sin añadir uno. Vacío: sin cambios."
+          }
+        }
+      ]
+    },
+    {
+      "key": "undo_replacement",
+      "timeout_seconds": 15,
+      "label": {
+        "en": "Undo the last replacement",
+        "fr": "Annuler le dernier remplacement",
+        "de": "Letzten Wechsel rückgängig machen",
+        "es": "Anular el último cambio"
+      },
+      "description": {
+        "en": "A replacement recorded by mistake (a button pressed, a level misread): the previous day comes back, the batteries go back to the stock.",
+        "fr": "Un remplacement enregistré par erreur (bouton appuyé, niveau mal lu) : le jour précédent revient, les piles retournent au stock.",
+        "de": "Ein versehentlich erfasster Wechsel (Taste gedrückt, Stand falsch gelesen): Der vorherige Tag kehrt zurück, die Batterien gehen zurück ins Lager.",
+        "es": "Un cambio registrado por error (botón pulsado, nivel mal leído): vuelve el día anterior, las pilas vuelven al stock."
+      },
+      "fields": [
+        {
+          "key": "battery",
+          "type": "string",
+          "required": true,
+          "label": {
+            "en": "Battery",
+            "fr": "Pile",
+            "de": "Batterie",
+            "es": "Pila"
+          },
+          "placeholder": {
+            "en": "#1",
+            "fr": "#1",
+            "de": "#1",
+            "es": "#1"
+          },
+          "description": {
+            "en": "The number in “List the batteries” (#2), or the exact name.",
+            "fr": "Le numéro dans « Lister les piles » (#2), ou le nom exact.",
+            "de": "Die Nummer in „Batterien auflisten“ (#2) oder der genaue Name.",
+            "es": "El número en «Listar las pilas» (#2), o el nombre exacto."
+          }
+        }
+      ]
+    },
+    {
+      "key": "remove_battery",
+      "timeout_seconds": 15,
+      "label": {
+        "en": "Remove a battery",
+        "fr": "Supprimer une pile",
+        "de": "Batterie entfernen",
+        "es": "Eliminar una pila"
+      },
+      "description": {
+        "en": "Removes the record; delete its device in Gladys too.",
+        "fr": "Supprime la fiche ; supprimez aussi son appareil dans Gladys.",
+        "de": "Entfernt den Eintrag; löschen Sie auch sein Gerät in Gladys.",
+        "es": "Elimina la ficha; elimine también su dispositivo en Gladys."
+      },
+      "fields": [
+        {
+          "key": "battery",
+          "type": "string",
+          "required": true,
+          "label": {
+            "en": "Battery",
+            "fr": "Pile",
+            "de": "Batterie",
+            "es": "Pila"
+          },
+          "placeholder": {
+            "en": "#1",
+            "fr": "#1",
+            "de": "#1",
+            "es": "#1"
+          },
+          "description": {
+            "en": "The number in “List the batteries” (#2), or the exact name.",
+            "fr": "Le numéro dans « Lister les piles » (#2), ou le nom exact.",
+            "de": "Die Nummer in „Batterien auflisten“ (#2) oder der genaue Name.",
+            "es": "El número en «Listar las pilas» (#2), o el nombre exacto."
+          }
+        }
+      ]
+    },
+    {
+      "key": "lookup_model",
+      "timeout_seconds": 15,
+      "label": {
+        "en": "Find the batteries of a model",
+        "fr": "Trouver les piles d’un modèle",
+        "de": "Batterien eines Modells finden",
+        "es": "Buscar las pilas de un modelo"
+      },
+      "description": {
+        "en": "Searches the device library (about 2,400 models, from Battery Notes) without adding anything.",
+        "fr": "Cherche dans la bibliothèque d’appareils (environ 2 400 modèles, issue de Battery Notes) sans rien ajouter.",
+        "de": "Durchsucht die Gerätebibliothek (rund 2.400 Modelle, aus Battery Notes), ohne etwas hinzuzufügen.",
+        "es": "Busca en la biblioteca de dispositivos (unos 2.400 modelos, de Battery Notes) sin añadir nada."
+      },
+      "fields": [
+        {
+          "key": "manufacturer",
+          "type": "string",
+          "label": {
+            "en": "Manufacturer",
+            "fr": "Fabricant",
+            "de": "Hersteller",
+            "es": "Fabricante"
+          },
+          "placeholder": {
+            "en": "IKEA",
+            "fr": "IKEA",
+            "de": "IKEA",
+            "es": "IKEA"
+          }
+        },
+        {
+          "key": "model",
+          "type": "string",
+          "label": {
+            "en": "Model",
+            "fr": "Modèle",
+            "de": "Modell",
+            "es": "Modelo"
+          },
+          "placeholder": {
+            "en": "STYRBAR",
+            "fr": "STYRBAR",
+            "de": "STYRBAR",
+            "es": "STYRBAR"
+          }
+        }
+      ]
+    }
+  ],
+  "widgets": [
+    {
+      "key": "batteries",
+      "icon": "battery",
+      "label": {
+        "en": "Batteries",
+        "fr": "Piles",
+        "de": "Batterien",
+        "es": "Pilas"
+      },
+      "description": {
+        "en": "Every battery from the most urgent, counters and a “Batteries replaced” button.",
+        "fr": "Toutes les piles de la plus urgente, compteurs et bouton « Piles changées ».",
+        "de": "Alle Batterien ab der dringendsten, Zähler und Taste „Batterien gewechselt“.",
+        "es": "Todas las pilas desde la más urgente, contadores y botón «Pilas cambiadas»."
+      },
+      "settings": [
+        {
+          "key": "show",
+          "type": "select",
+          "default": "all",
+          "label": {
+            "en": "Show",
+            "fr": "Afficher",
+            "de": "Anzeigen",
+            "es": "Mostrar"
+          },
+          "options": [
+            {
+              "value": "all",
+              "label": {
+                "en": "All batteries",
+                "fr": "Toutes les piles",
+                "de": "Alle Batterien",
+                "es": "Todas las pilas"
+              }
+            },
+            {
+              "value": "due",
+              "label": {
+                "en": "Only those to replace",
+                "fr": "Seulement celles à remplacer",
+                "de": "Nur die zu wechselnden",
+                "es": "Solo las que hay que cambiar"
+              }
+            }
+          ]
+        },
+        {
+          "key": "show_button",
+          "type": "boolean",
+          "default": true,
+          "label": {
+            "en": "“Batteries replaced” button",
+            "fr": "Bouton « Piles changées »",
+            "de": "Taste „Batterien gewechselt“",
+            "es": "Botón «Pilas cambiadas»"
+          }
+        }
+      ]
+    },
+    {
+      "key": "battery",
+      "icon": "battery-charging",
+      "label": {
+        "en": "One battery",
+        "fr": "Une pile",
+        "de": "Eine Batterie",
+        "es": "Una pila"
+      },
+      "description": {
+        "en": "Level, days left, type, dates, life and stock of one battery.",
+        "fr": "Niveau, jours restants, type, dates, durée de vie et stock d’une pile.",
+        "de": "Stand, Resttage, Typ, Daten, Lebensdauer und Lager einer Batterie.",
+        "es": "Nivel, días restantes, tipo, fechas, duración y stock de una pila."
+      },
+      "settings": [
+        {
+          "key": "battery",
+          "type": "select",
+          "source": "devices",
+          "required": true,
+          "label": {
+            "en": "Battery",
+            "fr": "Pile",
+            "de": "Batterie",
+            "es": "Pila"
+          },
+          "description": {
+            "en": "Among the batteries added as devices.",
+            "fr": "Parmi les piles ajoutées comme appareils.",
+            "de": "Unter den als Geräte hinzugefügten Batterien.",
+            "es": "Entre las pilas añadidas como dispositivos."
+          }
+        }
+      ]
+    },
+    {
+      "key": "shopping",
+      "icon": "shopping-cart",
+      "label": {
+        "en": "Batteries to buy",
+        "fr": "Piles à acheter",
+        "de": "Batterien kaufen",
+        "es": "Pilas por comprar"
+      },
+      "description": {
+        "en": "What to buy by type, the stock, and buttons to update it.",
+        "fr": "Ce qu’il faut acheter par type, le stock, et des boutons pour le mettre à jour.",
+        "de": "Was nach Typ zu kaufen ist, das Lager und Tasten zum Ändern.",
+        "es": "Lo que hay que comprar por tipo, el stock y botones para actualizarlo."
+      }
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "replacement_due",
+      "label": {
+        "en": "Battery replacement due",
+        "fr": "Remplacement de piles à prévoir",
+        "de": "Batteriewechsel fällig",
+        "es": "Cambio de pilas previsto"
+      },
+      "description": {
+        "en": "Once per battery, when its end is near or its reported level is low; again after a replacement.",
+        "fr": "Une fois par pile, quand sa fin approche ou que son niveau mesuré est bas ; de nouveau après un remplacement.",
+        "de": "Einmal pro Batterie, wenn ihr Ende naht oder ihr gemeldeter Stand niedrig ist; erneut nach einem Wechsel.",
+        "es": "Una vez por pila, cuando se acerca su fin o su nivel medido es bajo; de nuevo tras un cambio."
+      },
+      "fields": [
+        {
+          "key": "battery",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "Battery",
+            "fr": "Pile",
+            "de": "Batterie",
+            "es": "Pila"
+          },
+          "description": {
+            "en": "Empty: any battery.",
+            "fr": "Vide : n’importe quelle pile.",
+            "de": "Leer: jede Batterie.",
+            "es": "Vacío: cualquier pila."
+          }
+        },
+        {
+          "key": "reason",
+          "type": "select",
+          "label": {
+            "en": "Reason",
+            "fr": "Raison",
+            "de": "Grund",
+            "es": "Motivo"
+          },
+          "options": [
+            {
+              "value": "age",
+              "label": {
+                "en": "Estimated end",
+                "fr": "Fin estimée",
+                "de": "Geschätztes Ende",
+                "es": "Fin estimado"
+              }
+            },
+            {
+              "value": "level",
+              "label": {
+                "en": "Low reported level",
+                "fr": "Niveau mesuré bas",
+                "de": "Niedriger gemeldeter Stand",
+                "es": "Nivel medido bajo"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "Name",
+            "fr": "Nom",
+            "de": "Name",
+            "es": "Nombre"
+          }
+        },
+        {
+          "key": "battery_type",
+          "type": "string",
+          "label": {
+            "en": "Battery type",
+            "fr": "Type de pile",
+            "de": "Batterietyp",
+            "es": "Tipo de pila"
+          }
+        },
+        {
+          "key": "quantity",
+          "type": "number",
+          "label": {
+            "en": "Number of batteries",
+            "fr": "Nombre de piles",
+            "de": "Anzahl der Batterien",
+            "es": "Número de pilas"
+          }
+        },
+        {
+          "key": "days_remaining",
+          "type": "number",
+          "label": {
+            "en": "Days until the end",
+            "fr": "Jours avant la fin",
+            "de": "Tage bis zum Ende",
+            "es": "Días hasta el fin"
+          }
+        },
+        {
+          "key": "level",
+          "type": "number",
+          "label": {
+            "en": "Level (%)",
+            "fr": "Niveau (%)",
+            "de": "Stand (%)",
+            "es": "Nivel (%)"
+          }
+        },
+        {
+          "key": "level_source",
+          "type": "string",
+          "label": {
+            "en": "Level source (reported, estimated)",
+            "fr": "Source du niveau (reported, estimated)",
+            "de": "Quelle des Stands (reported, estimated)",
+            "es": "Origen del nivel (reported, estimated)"
+          }
+        },
+        {
+          "key": "end_date",
+          "type": "string",
+          "label": {
+            "en": "Estimated end",
+            "fr": "Fin estimée",
+            "de": "Geschätztes Ende",
+            "es": "Fin estimado"
+          }
+        },
+        {
+          "key": "reason",
+          "type": "string",
+          "label": {
+            "en": "Reason (age, level)",
+            "fr": "Raison (age, level)",
+            "de": "Grund (age, level)",
+            "es": "Motivo (age, level)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "battery_replaced",
+      "label": {
+        "en": "Batteries replaced",
+        "fr": "Piles remplacées",
+        "de": "Batterien gewechselt",
+        "es": "Pilas cambiadas"
+      },
+      "description": {
+        "en": "A replacement recorded from the device button, a widget or the configuration (never from a scene action).",
+        "fr": "Un remplacement enregistré depuis le bouton de l’appareil, un widget ou la configuration (jamais depuis une action de scène).",
+        "de": "Ein Wechsel, erfasst über die Gerätetaste, ein Widget oder die Konfiguration (nie über eine Szenenaktion).",
+        "es": "Un cambio registrado desde el botón del dispositivo, un widget o la configuración (nunca desde una acción de escena)."
+      },
+      "fields": [
+        {
+          "key": "battery",
+          "type": "select",
+          "source": "devices",
+          "required": false,
+          "label": {
+            "en": "Battery",
+            "fr": "Pile",
+            "de": "Batterie",
+            "es": "Pila"
+          },
+          "description": {
+            "en": "Empty: any battery.",
+            "fr": "Vide : n’importe quelle pile.",
+            "de": "Leer: jede Batterie.",
+            "es": "Vacío: cualquier pila."
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "Name",
+            "fr": "Nom",
+            "de": "Name",
+            "es": "Nombre"
+          }
+        },
+        {
+          "key": "battery_type",
+          "type": "string",
+          "label": {
+            "en": "Battery type",
+            "fr": "Type de pile",
+            "de": "Batterietyp",
+            "es": "Tipo de pila"
+          }
+        },
+        {
+          "key": "quantity",
+          "type": "number",
+          "label": {
+            "en": "Number of batteries",
+            "fr": "Nombre de piles",
+            "de": "Anzahl der Batterien",
+            "es": "Número de pilas"
+          }
+        },
+        {
+          "key": "days_used",
+          "type": "number",
+          "label": {
+            "en": "Days the previous batteries lasted",
+            "fr": "Jours tenus par les piles précédentes",
+            "de": "Haltbarkeit der vorherigen Batterien (Tage)",
+            "es": "Días que duraron las pilas anteriores"
+          }
+        },
+        {
+          "key": "stock_left",
+          "type": "number",
+          "label": {
+            "en": "Left in stock (empty: not tracked)",
+            "fr": "Restant en stock (vide : non suivi)",
+            "de": "Noch auf Lager (leer: nicht erfasst)",
+            "es": "Quedan en stock (vacío: sin seguimiento)"
+          }
+        },
+        {
+          "key": "origin",
+          "type": "string",
+          "label": {
+            "en": "Origin (device, widget, configuration)",
+            "fr": "Origine (device, widget, configuration)",
+            "de": "Herkunft (device, widget, configuration)",
+            "es": "Origen (device, widget, configuration)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "stock_short",
+      "label": {
+        "en": "Batteries to buy",
+        "fr": "Piles à acheter",
+        "de": "Batterien zu kaufen",
+        "es": "Pilas por comprar"
+      },
+      "description": {
+        "en": "A battery type has something to buy (needed within the horizon, more than in stock); again once restocked.",
+        "fr": "Un type de pile a quelque chose à acheter (besoin dans l’horizon supérieur au stock) ; de nouveau après réassort.",
+        "de": "Ein Batterietyp hat etwas zu kaufen (Bedarf im Horizont größer als das Lager); erneut nach dem Auffüllen.",
+        "es": "Un tipo de pila tiene algo que comprar (necesidad en el horizonte mayor que el stock); de nuevo tras reponer."
+      },
+      "fields": [
+        {
+          "key": "battery_type",
+          "type": "string",
+          "label": {
+            "en": "Battery type",
+            "fr": "Type de pile",
+            "de": "Batterietyp",
+            "es": "Tipo de pila"
+          },
+          "placeholder": {
+            "en": "CR2032, AA, AAA, CR123A…",
+            "fr": "CR2032, AA, AAA, CR123A…",
+            "de": "CR2032, AA, AAA, CR123A…",
+            "es": "CR2032, AA, AAA, CR123A…"
+          },
+          "description": {
+            "en": "Written as in the integration (CR2032, AA…). Empty: any type.",
+            "fr": "Écrit comme dans l’intégration (CR2032, AA…). Vide : n’importe quel type.",
+            "de": "So geschrieben wie in der Integration (CR2032, AA…). Leer: jeder Typ.",
+            "es": "Escrito como en la integración (CR2032, AA…). Vacío: cualquier tipo."
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "battery_type",
+          "type": "string",
+          "label": {
+            "en": "Battery type",
+            "fr": "Type de pile",
+            "de": "Batterietyp",
+            "es": "Tipo de pila"
+          }
+        },
+        {
+          "key": "to_buy",
+          "type": "number",
+          "label": {
+            "en": "To buy",
+            "fr": "À acheter",
+            "de": "Zu kaufen",
+            "es": "Por comprar"
+          }
+        },
+        {
+          "key": "needed",
+          "type": "number",
+          "label": {
+            "en": "Needed",
+            "fr": "Nécessaires",
+            "de": "Benötigt",
+            "es": "Necesarias"
+          }
+        },
+        {
+          "key": "stock",
+          "type": "number",
+          "label": {
+            "en": "In stock",
+            "fr": "En stock",
+            "de": "Auf Lager",
+            "es": "En stock"
+          }
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "report_level",
+      "label": {
+        "en": "Report a battery level",
+        "fr": "Transmettre un niveau de pile",
+        "de": "Batteriestand melden",
+        "es": "Transmitir un nivel de pila"
+      },
+      "description": {
+        "en": "Gives the integration the level a scene read on the real sensor (a rise of 25 points can count as a replacement).",
+        "fr": "Donne à l’intégration le niveau qu’une scène a lu sur le vrai capteur (une remontée de 25 points peut compter comme remplacement).",
+        "de": "Gibt der Integration den Stand, den eine Szene am echten Sensor gelesen hat (ein Anstieg um 25 Punkte kann als Wechsel zählen).",
+        "es": "Da a la integración el nivel que una escena leyó en el sensor real (una subida de 25 puntos puede contar como cambio)."
+      },
+      "timeout_seconds": 15,
+      "fields": [
+        {
+          "key": "battery",
+          "type": "select",
+          "source": "devices",
+          "required": true,
+          "label": {
+            "en": "Battery",
+            "fr": "Pile",
+            "de": "Batterie",
+            "es": "Pila"
+          },
+          "description": {
+            "en": "Among the batteries added as devices.",
+            "fr": "Parmi les piles ajoutées comme appareils.",
+            "de": "Unter den als Geräte hinzugefügten Batterien.",
+            "es": "Entre las pilas añadidas como dispositivos."
+          }
+        },
+        {
+          "key": "level",
+          "type": "string",
+          "required": true,
+          "label": {
+            "en": "Level (%)",
+            "fr": "Niveau (%)",
+            "de": "Stand (%)",
+            "es": "Nivel (%)"
+          },
+          "placeholder": {
+            "en": "{{triggerEvent.last_value}}",
+            "fr": "{{triggerEvent.last_value}}",
+            "de": "{{triggerEvent.last_value}}",
+            "es": "{{triggerEvent.last_value}}"
+          },
+          "description": {
+            "en": "A number from 0 to 100, usually a variable of the scene.",
+            "fr": "Un nombre de 0 à 100, en général une variable de la scène.",
+            "de": "Eine Zahl von 0 bis 100, meist eine Variable der Szene.",
+            "es": "Un número de 0 a 100, normalmente una variable de la escena."
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "key": "level",
+          "type": "number",
+          "label": {
+            "en": "Level kept (%)",
+            "fr": "Niveau retenu (%)",
+            "de": "Übernommener Stand (%)",
+            "es": "Nivel guardado (%)"
+          }
+        },
+        {
+          "key": "replaced",
+          "type": "boolean",
+          "label": {
+            "en": "Counted as a replacement",
+            "fr": "Compté comme remplacement",
+            "de": "Als Wechsel gezählt",
+            "es": "Contado como cambio"
+          }
+        },
+        {
+          "key": "days_remaining",
+          "type": "number",
+          "label": {
+            "en": "Days until the end",
+            "fr": "Jours avant la fin",
+            "de": "Tage bis zum Ende",
+            "es": "Días hasta el fin"
+          }
+        }
+      ]
+    },
+    {
+      "key": "mark_replaced",
+      "label": {
+        "en": "Record a battery replacement",
+        "fr": "Enregistrer un remplacement de piles",
+        "de": "Batteriewechsel erfassen",
+        "es": "Registrar un cambio de pilas"
+      },
+      "description": {
+        "en": "Records a replacement today (the stock gives its batteries).",
+        "fr": "Enregistre un remplacement aujourd’hui (le stock donne ses piles).",
+        "de": "Erfasst einen Wechsel heute (das Lager gibt seine Batterien ab).",
+        "es": "Registra un cambio hoy (el stock entrega sus pilas)."
+      },
+      "timeout_seconds": 15,
+      "fields": [
+        {
+          "key": "battery",
+          "type": "select",
+          "source": "devices",
+          "required": true,
+          "label": {
+            "en": "Battery",
+            "fr": "Pile",
+            "de": "Batterie",
+            "es": "Pila"
+          },
+          "description": {
+            "en": "Among the batteries added as devices.",
+            "fr": "Parmi les piles ajoutées comme appareils.",
+            "de": "Unter den als Geräte hinzugefügten Batterien.",
+            "es": "Entre las pilas añadidas como dispositivos."
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "key": "days_used",
+          "type": "number",
+          "label": {
+            "en": "Days the previous batteries lasted",
+            "fr": "Jours tenus par les piles précédentes",
+            "de": "Haltbarkeit der vorherigen Batterien (Tage)",
+            "es": "Días que duraron las pilas anteriores"
+          }
+        },
+        {
+          "key": "stock_left",
+          "type": "number",
+          "label": {
+            "en": "Left in stock (-1: not tracked)",
+            "fr": "Restant en stock (-1 : non suivi)",
+            "de": "Noch auf Lager (-1: nicht erfasst)",
+            "es": "Quedan en stock (-1: sin seguimiento)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "get_report",
+      "label": {
+        "en": "Get the battery report",
+        "fr": "Obtenir le bilan des piles",
+        "de": "Batteriebericht abrufen",
+        "es": "Obtener el informe de pilas"
+      },
+      "description": {
+        "en": "A text to send in a notification: batteries to replace, all of them, or the shopping list.",
+        "fr": "Un texte à envoyer en notification : piles à remplacer, toutes les piles, ou la liste d’achats.",
+        "de": "Ein Text für eine Benachrichtigung: zu wechselnde Batterien, alle oder die Einkaufsliste.",
+        "es": "Un texto para enviar en una notificación: pilas por cambiar, todas, o la lista de compra."
+      },
+      "timeout_seconds": 10,
+      "fields": [
+        {
+          "key": "content",
+          "type": "select",
+          "default": "due",
+          "label": {
+            "en": "Content",
+            "fr": "Contenu",
+            "de": "Inhalt",
+            "es": "Contenido"
+          },
+          "options": [
+            {
+              "value": "due",
+              "label": {
+                "en": "Batteries to replace",
+                "fr": "Piles à remplacer",
+                "de": "Zu wechselnde Batterien",
+                "es": "Pilas por cambiar"
+              }
+            },
+            {
+              "value": "all",
+              "label": {
+                "en": "All batteries",
+                "fr": "Toutes les piles",
+                "de": "Alle Batterien",
+                "es": "Todas las pilas"
+              }
+            },
+            {
+              "value": "shopping",
+              "label": {
+                "en": "Shopping list",
+                "fr": "Liste d’achats",
+                "de": "Einkaufsliste",
+                "es": "Lista de compra"
+              }
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "key": "text",
+          "type": "string",
+          "label": {
+            "en": "Report text",
+            "fr": "Texte du bilan",
+            "de": "Berichtstext",
+            "es": "Texto del informe"
+          }
+        },
+        {
+          "key": "due_count",
+          "type": "number",
+          "label": {
+            "en": "Batteries to replace",
+            "fr": "Piles à remplacer",
+            "de": "Zu wechselnde Batterien",
+            "es": "Pilas por cambiar"
+          }
+        },
+        {
+          "key": "to_buy_count",
+          "type": "number",
+          "label": {
+            "en": "Batteries to buy",
+            "fr": "Piles à acheter",
+            "de": "Zu kaufende Batterien",
+            "es": "Pilas por comprar"
+          }
+        }
+      ]
+    }
+  ]
+}
